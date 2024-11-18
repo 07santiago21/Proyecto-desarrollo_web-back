@@ -1,5 +1,6 @@
 import {Entity,PrimaryGeneratedColumn,Column,CreateDateColumn,UpdateDateColumn,ManyToOne,JoinColumn,} from 'typeorm';
 import { User } from 'src/auth/entities/user.entity'; 
+import { Expose } from 'class-transformer';
   
   @Entity('properties') // Nombre de la tabla
   export class Property {
@@ -9,6 +10,11 @@ import { User } from 'src/auth/entities/user.entity';
     @ManyToOne(() => User, user => user.properties, { nullable: false, onDelete: 'CASCADE' })
     @JoinColumn({ name: 'user_id' }) 
     user: User; // Relación con la tabla de usuarios, clave foránea referenciada a Users
+
+    @Expose()
+    get user_id(): string {
+      return this.user?.user_id; // Exponer solo el user_id
+    }
   
     @Column({ type: 'varchar', length: 255 })
     title: string; // Título de la propiedad
