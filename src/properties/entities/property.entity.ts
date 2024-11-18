@@ -2,6 +2,8 @@ import {Entity,PrimaryGeneratedColumn,Column,CreateDateColumn,UpdateDateColumn,M
 import { User } from 'src/auth/entities/user.entity'; 
 import { Expose } from 'class-transformer';
 import { Photo } from './Photos.entity';
+import { Booking } from './bookings-entity';
+import { Review } from './review-entity';
   
   @Entity('properties') // Nombre de la tabla
   export class Property {
@@ -52,6 +54,12 @@ import { Photo } from './Photos.entity';
 
 
     @OneToMany(() => Photo, photo => photo.property)
-  photos: Photo[]; // Relación con las fotos
+    photos: Photo[]; // Relación con las fotos
+
+    @OneToMany(() => Booking, booking => booking.property)
+    bookings: Booking[];
+
+    @OneToMany(() => Review, review => review.property)
+  reviews: Review[];
   }
   

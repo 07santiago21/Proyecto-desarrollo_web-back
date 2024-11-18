@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -9,39 +9,60 @@ import { AuthGuard } from './guards/auth/auth.guard';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.authService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    try {
+      return await this.authService.create(createUserDto);
+    } catch (error) {
+      return { message: 'No se pudo realizar la operación', error: error.message };
+    }
   }
-  
-  
-  
+
   @Post('login')
-  login(@Body() LoginUserDto:LoginUserDto){
-    return this.authService.login(LoginUserDto)
+  async login(@Body() loginUserDto: LoginUserDto) {
+    try {
+      return await this.authService.login(loginUserDto);
+    } catch (error) {
+      return { message: 'No se pudo realizar la operación', error: error.message };
+    }
   }
 
   @UseGuards(AuthGuard)
   @Get()
-  findAll(@Body() body:any) {
-    console.log(body)
-    return this.authService.findAll();
+  async findAll(@Body() body: any) {
+    try {
+      console.log(body);
+      return await this.authService.findAll();
+    } catch (error) {
+      return { message: 'No se pudo realizar la operación', error: error.message };
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.authService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.authService.findOne(+id);
+    } catch (error) {
+      return { message: 'No se pudo realizar la operación', error: error.message };
+    }
   }
 
   @UseGuards(AuthGuard)
   @Patch()
-  update(@Body() updateUserDto: UpdateUserDto) {
-    return this.authService.update(updateUserDto);
+  async update(@Body() updateUserDto: UpdateUserDto) {
+    try {
+      return await this.authService.update(updateUserDto);
+    } catch (error) {
+      return { message: 'No se pudo realizar la operación', error: error.message };
+    }
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.authService.remove(+id);
+  async remove(@Param('id') id: string) {
+    try {
+      return await this.authService.remove(+id);
+    } catch (error) {
+      return { message: 'No se pudo realizar la operación', error: error.message };
+    }
   }
 }
