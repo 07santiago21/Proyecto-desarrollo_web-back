@@ -73,13 +73,21 @@ export class AuthService {
     return `This action returns a #${id} auth`;
   }
 
-  update(updateUserDto: UpdateUserDto) {
-    console.log(updateUserDto)
-    const { user_id, ...user }= updateUserDto;
-    return this.UserRepository.update(
-      { user_id },
-      user);
-  }
+
+  async update(updateUserDto: UpdateUserDto) {
+    
+    const { user_id, ...userData } = updateUserDto;
+
+    const userToUpdate = await this.UserRepository.findOne({ where: { user_id } });
+    if (!userToUpdate) {
+        throw new Error(`Usuario con ID ${user_id} no encontrado.`);
+    }
+
+    const user = await this.UserRepository.update({ user_id }, userData);
+
+    return user;
+}
+
 
   remove(id: number) {
     return `This action removes a #${id} auth`;

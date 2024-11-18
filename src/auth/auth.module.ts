@@ -13,6 +13,7 @@ import { ConfigModule } from '@nestjs/config';
     TypeOrmModule.forFeature([
       User
     ]),
+    
     JwtModule.register({
       secret:process.env.JWT_SECRET,
       global:true,

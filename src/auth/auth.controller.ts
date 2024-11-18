@@ -34,6 +34,7 @@ export class AuthController {
     return this.authService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch()
   update(@Body() updateUserDto: UpdateUserDto) {
     return this.authService.update(updateUserDto);

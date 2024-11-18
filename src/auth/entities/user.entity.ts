@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Property } from "src/properties/entities/property.entity";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('users')
 export class User {
@@ -23,7 +24,15 @@ export class User {
     
     @Column({default:false})
     is_owner:boolean// (Indica si el usuario es propietario de propiedades: TRUE o FALSE)
-    //created_at// (Fecha y hora de creación)
-    //updated_at //(Fecha y hora de la última actualización) 
+    
+    @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+    created_at: Date; //(Fecha y hora de creación)
+
+    @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
+    updated_at: Date; //(Fecha y hora de la última actualización)
+
+
+    @OneToMany(() => Property, property => property.user,{cascade:true})
+    properties: Property[]; // Lista de propiedades asociadas con el usuario
 
 }
