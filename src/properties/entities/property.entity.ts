@@ -1,6 +1,7 @@
-import {Entity,PrimaryGeneratedColumn,Column,CreateDateColumn,UpdateDateColumn,ManyToOne,JoinColumn,} from 'typeorm';
+import {Entity,PrimaryGeneratedColumn,Column,CreateDateColumn,UpdateDateColumn,ManyToOne,JoinColumn, OneToMany,} from 'typeorm';
 import { User } from 'src/auth/entities/user.entity'; 
 import { Expose } from 'class-transformer';
+import { Photo } from './Photos.entity';
   
   @Entity('properties') // Nombre de la tabla
   export class Property {
@@ -48,5 +49,9 @@ import { Expose } from 'class-transformer';
   
     @UpdateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', onUpdate: 'CURRENT_TIMESTAMP' })
     updated_at: Date; // Fecha y hora de la última actualización
+
+
+    @OneToMany(() => Photo, photo => photo.property)
+  photos: Photo[]; // Relación con las fotos
   }
   

@@ -3,6 +3,7 @@ import { PropertiesService } from './properties.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { AuthGuard } from 'src/auth/guards/auth/auth.guard';
+import { CreatePhotoDto } from './dto/create-photo.dto';
 
 @Controller('properties')
 export class PropertiesController {
@@ -45,5 +46,13 @@ export class PropertiesController {
 
     const user_id = body.user_id
     return this.propertiesService.remove(id,user_id);
+  }
+
+
+  @UseGuards(AuthGuard)
+  @Post('photo/:propertyId')
+  createPhoto(@Param('propertyId') id:string, @Body() CreatePhotoDto:CreatePhotoDto) {
+    
+    return this.propertiesService.createPhoto(id,CreatePhotoDto);
   }
 }

@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Property } from './entities/property.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/auth/entities/user.entity';
+import { CreatePhotoDto } from './dto/create-photo.dto';
+import { Photo } from './entities/Photos.entity';
 
 @Injectable()
 export class PropertiesService {
@@ -13,7 +15,9 @@ export class PropertiesService {
     @InjectRepository(Property)
     private propertyRepository: Repository<Property>,
     @InjectRepository(User)
-    private userRepository: Repository<User>
+    private userRepository: Repository<User>,
+    @InjectRepository(Photo)
+    private readonly photoRepository: Repository<Photo>
   ) {}
 
   async create(createPropertyDto: CreatePropertyDto) {
@@ -141,5 +145,32 @@ export class PropertiesService {
       throw new NotFoundException(`La propiedad con ID ${propertyId} no se pudo eliminar`);
     }
   }
+
+  async createPhoto(idProperty:string,createPhotoDto:CreatePhotoDto){
+
+    const {user_id,...data} = createPhotoDto
+
+    const property = await this.propertyRepository.findOne({
+      where: { listing_id: idProperty },
+      relations: ['user'], 
+    });
+
+    if (!property) {
+      throw new NotFoundException(`La propiedad con ID ${idProperty} no fue encontrada`);
+    }
+
+    if (property.user.user_id !== user_id) {
+      throw new ForbiddenException(`No tienes permiso para agregar fotos a esta propiedad`);
+    }
+
+    const photo = this.photoRepository.create({
+      property,
+      photo_url: data.photo_url,
+    });
+
+    return await this.photoRepository.save(photo);
+  }
+
+  
   
 }

@@ -4,12 +4,14 @@ import { PropertiesController } from './properties.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/auth/entities/user.entity';
 import { Property } from './entities/property.entity';
+import { Photo } from './entities/Photos.entity';
 
 @Module({
   imports:[
     TypeOrmModule.forFeature([
         User,
-        Property
+        Property,
+        Photo
       ]),
 ],
   controllers: [PropertiesController],
