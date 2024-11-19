@@ -24,7 +24,7 @@ export class User {
     @Column({type:'varchar',default:''})
     bio:string //(Biografía, opcional)
     
-    @Column({default:false})
+    @Column({type: 'boolean', default:false})
     is_owner:boolean// (Indica si el usuario es propietario de propiedades: TRUE o FALSE)
     
     @CreateDateColumn({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
